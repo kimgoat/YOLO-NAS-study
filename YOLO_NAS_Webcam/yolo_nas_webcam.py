@@ -11,4 +11,6 @@ model = models.get(Models.YOLOX_N, pretrained_weights='coco')
 
 model = model.to("cuda" if torch.cuda.is_available()else 'cpu')
 
-model.predict_webcam()
+models.convert_to_onnx(model = model, input_shape = (3,640, 640), out_path = "yolo_nas_s.onnx")
+
+# model.predict_webcam()
