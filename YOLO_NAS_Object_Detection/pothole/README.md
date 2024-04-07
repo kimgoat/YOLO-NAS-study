@@ -156,23 +156,30 @@ head: [
 %load_ext tensorboard
 %tensorboard --logdir runs
 ```
-//평가지표 사진 첨부
+위 명령어 실행시 훈련 모델의 평가지표 그래프를 확인할 수 있다.
+
+![p_curve.png](imgs%2Fp_curve.png)
+![pr_curve.png](imgs%2Fpr_curve.png)
+![r_curve.png](imgs%2Fr_curve.png)
+![results.png](imgs%2Fresults.png)
+![confusion_matrix.png](imgs%2Fconfusion_matrix.png)
+![f1_curve.png](imgs%2Ff1_curve.png)
 
 ```python
 !ls /content/yolov5/runs/train/pothole_results/
 ```
-![img.png](img.png)
+![img_4.png](imgs%2Fimg_4.png)
 
 ```python
 Image(filename='/content/yolov5/runs/train/pothole_results/train_batch0.jpg')
 ```
-![img_1.png](img_1.png)
+![img_7.png](imgs%2Fimg_7.png)
 
 
 ```python
 Image(filename='/content/yolov5/runs/train/pothole_results/val_batch0_labels.jpg')
 ```
-![img_2.png](img_2.png)
+![img_6.png](imgs%2Fimg_6.png)
 
 
 ### 2-4. 검증(Validation)
@@ -301,7 +308,7 @@ image_name = random.choice(glob.glob('/content/yolov5/runs/detect/exp2/*.jpg'))
 display(Image(filename=image_name))
 ```
 실행할 때마다 무작위로 이미지에 모델을 적용한 사진이 출력됨
-![img_3.png](img_3.png)
+![img_5.png](imgs%2Fimg_5.png)
 
 
 ### 2-5. 모델 내보내기
