@@ -2,6 +2,19 @@
 
 # Object Detection_Pothole
 
+목차
+1. [Dataset 구하기](#1-dataset-구하기)
+2. [실습 (colab)](#2-실습-colab) </br>
+2-1. [모델 다운로드](#2-1-모델-다운로드) </br>
+2-2. [데이터셋 다룬로드](#2-2-데이터셋-다운로드)</br>
+2-3. [학습 (Traning)](#2-3-학습traning) </br>
+2-4. [검증 (Validation)](#2-4-검증validation)</br>
+2-5. [추론 (Inference)](#2-5-추론inference)</br>
+2-6. [모델 내보내기](#2-6-모델-내보내기)</br>
+
+
+
+
 ## 1. Dataset 구하기
 
 [🔗 roboflow ](https://public.roboflow.com/object-detection/pothole/1)
@@ -81,7 +94,7 @@ with open("/content/yolov5/pothole/data.yaml", 'r') as stream:
 
 %cat /content/yolov5/models/yolov5s.yaml
 ```
-nc 수정
+pothole dataset에 class는 pothole 1개 이므로 nc를 수정한다.
 ```python
 %%writetemplate /content/yolov5/models/custom_yolov5s.yaml
 
@@ -134,7 +147,7 @@ head: [
   ]
 ```
 
-### 2-3. 학습 
+### 2-3. 학습(Traning)
 * `img`: 입력 이미지 크기 정의
 * `batch`: 배치 크기 결정
 * `epochs`: 학습 기간 개수 정의
@@ -149,7 +162,10 @@ head: [
 %cd /content/yolov5/
 !python train.py --img 640 --batch 32 --epochs 100 --dat ./pothole/data.yaml --cfg ./models/custom_yolov5s.yaml --weights '' --name pothole_results --cache
 ```
-![img.png](imgs/img4.png)
+<details>
+	<summary> 위 코드 실행 결과</summary>
+<img src="imgs/img4.png" />
+</details>
 
 
 ```python
@@ -158,35 +174,50 @@ head: [
 ```
 위 명령어 실행시 훈련 모델의 평가지표 그래프를 확인할 수 있다.
 
-![p_curve.png](imgs%2Fp_curve.png)
-![pr_curve.png](imgs%2Fpr_curve.png)
-![r_curve.png](imgs%2Fr_curve.png)
-![results.png](imgs%2Fresults.png)
-![confusion_matrix.png](imgs%2Fconfusion_matrix.png)
-![f1_curve.png](imgs%2Ff1_curve.png)
+<details>
+	<summary> 평과지표 그래프</summary>
+<img src="imgs/p_curve.png" />
+<img src="imgs/pr_curve.png" />
+<img src="imgs/r_curve.png" />
+<img src="imgs/f1_curve.png" />
+<img src="imgs/confusion_matrix.png" />
+<img src="imgs/results.png" />
+</details>
+
 
 ```python
 !ls /content/yolov5/runs/train/pothole_results/
 ```
-![img_4.png](imgs%2Fimg_4.png)
+<details>
+	<summary> 위 코드 실행 결과</summary>
+<img src="imgs/img_4.png" />
+</details>
 
 ```python
 Image(filename='/content/yolov5/runs/train/pothole_results/train_batch0.jpg')
 ```
-![img_7.png](imgs%2Fimg_7.png)
+<details>
+	<summary> 위 코드 실행 결과</summary>
+<img src="imgs/img_7.png" />
+</details>
 
 
 ```python
 Image(filename='/content/yolov5/runs/train/pothole_results/val_batch0_labels.jpg')
 ```
-![img_6.png](imgs%2Fimg_6.png)
-
+<details>
+	<summary> 위 코드 실행 결과</summary>
+<img src="imgs/img_6.png" />
+</details>
 
 ### 2-4. 검증(Validation)
 
 ```python
 !python val.py --weights runs/train/pothole_results/weights/best.pt --data ./pothole/data.yaml --img 640 --iou 0.65 --half
 ```
+<details>
+	<summary> 위 코드 실행 결과</summary>
+
 ```bash
 val: data=./pothole/data.yaml, weights=['runs/train/pothole_results/weights/best.pt'], batch_size=32, imgsz=640, conf_thres=0.001, iou_thres=0.65, max_det=300, task=val, device=, workers=8, single_cls=False, augment=False, verbose=False, save_txt=False, save_hybrid=False, save_conf=False, save_json=False, project=runs/val, name=exp, exist_ok=False, half=True, dnn=False
 YOLOv5 🚀 v7.0-296-gae4ef3b2 Python-3.10.12 torch-2.2.1+cu121 CUDA:0 (Tesla T4, 15102MiB)
@@ -200,9 +231,17 @@ Speed: 0.3ms pre-process, 27.8ms inference, 15.7ms NMS per image at shape (32, 3
 Results saved to runs/val/exp
 ```
 
+</details>
+
+
+
 ```python
 !python val.py --weights runs/train/pothole_results/weights/best.pt --data ./pothole/data.yaml --img 640 --task test
 ```
+
+<details>
+	<summary> 위 코드 실행 결과</summary>
+
 ```bash
 val: data=./pothole/data.yaml, weights=['runs/train/pothole_results/weights/best.pt'], batch_size=32, imgsz=640, conf_thres=0.001, iou_thres=0.6, max_det=300, task=test, device=, workers=8, single_cls=False, augment=False, verbose=False, save_txt=False, save_hybrid=False, save_conf=False, save_json=False, project=runs/val, name=exp, exist_ok=False, half=False, dnn=False
 YOLOv5 🚀 v7.0-296-gae4ef3b2 Python-3.10.12 torch-2.2.1+cu121 CUDA:0 (Tesla T4, 15102MiB)
@@ -218,10 +257,18 @@ Speed: 0.3ms pre-process, 13.9ms inference, 33.9ms NMS per image at shape (32, 3
 Results saved to runs/val/exp2
 ```
 
-### 2-4. 추론(Inference)
+</details>
+
+
+
+### 2-5. 추론(Inference)
 ```python
 !python detect.py --weights runs/train/pothole_results/weights/best.pt --img 640 --conf 0.4 --source ./pothole/test/images
 ```
+
+<details>
+	<summary> 위 코드 실행 결과</summary>
+
 ```bash
 detect: weights=['runs/train/pothole_results/weights/best.pt'], source=./pothole/test/images, data=data/coco128.yaml, imgsz=[640, 640], conf_thres=0.4, iou_thres=0.45, max_det=1000, device=, view_img=False, save_txt=False, save_csv=False, save_conf=False, save_crop=False, nosave=False, classes=None, agnostic_nms=False, augment=False, visualize=False, update=False, project=runs/detect, name=exp, exist_ok=False, line_thickness=3, hide_labels=False, hide_conf=False, half=False, dnn=False, vid_stride=1
 YOLOv5 🚀 v7.0-296-gae4ef3b2 Python-3.10.12 torch-2.2.1+cu121 CUDA:0 (Tesla T4, 15102MiB)
@@ -299,6 +346,9 @@ Speed: 0.5ms pre-process, 17.5ms inference, 9.5ms NMS per image at shape (1, 3, 
 Results saved to runs/detect/exp2
 ```
 
+</details>
+
+
 ```python
 import glob
 import random
@@ -307,11 +357,15 @@ from IPython.display import Image, display
 image_name = random.choice(glob.glob('/content/yolov5/runs/detect/exp2/*.jpg'))
 display(Image(filename=image_name))
 ```
+
+<details>
+	<summary> 위 코드 실행 결과</summary>
 실행할 때마다 무작위로 이미지에 모델을 적용한 사진이 출력됨
-![img_5.png](imgs%2Fimg_5.png)
+<img src="imgs/img_5.png">
+</details>
 
 
-### 2-5. 모델 내보내기
+### 2-6. 모델 내보내기
 ```python
 from google.colab import drive
 drive.mount('/content/drive')
