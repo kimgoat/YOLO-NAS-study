@@ -175,7 +175,7 @@ head: [
 위 명령어 실행시 훈련 모델의 평가지표 그래프를 확인할 수 있다.
 
 <details>
-	<summary> 평과지표 그래프</summary>
+	<summary> 평가지표 그래프</summary>
 <img src="imgs/p_curve.png" />
 <img src="imgs/pr_curve.png" />
 <img src="imgs/r_curve.png" />
